@@ -2,14 +2,40 @@
 
 ## Background
 
-On a rolling basis different teams in O&G companies, academic research groups and vendors are porting propagators such as 3D isotropic acoustic and TTI to next-generation architectures with the goal of evaluating the relative performance or some performance/price metric. This underpins high-value decisions around purchasing (applies to both on-prem and Cloud resource decisions) and often a shift in programming model (e.g. business case to reimplement existing x86 software in CUDA). This presents several challenges:
+The seismic imaging community,
 
-* Difficult to perform an apples-to-apples comparison when different implementations are done by different developers of varying skills, e.g. does the benchmark reflect differences in architecture or differences in developer skill.
+* Energy companies.
+* O&G service companies.
+* Processor companies.
+* Supercomputer/cluster manufacturers.
+* Cloud companies.
+* Independent software vendors.
+* Academic research community.
+
+is continuously improving the accuracy and efficiency of seismic imaging through a combination of,
+
+* Algorithmic development:
+  * Improved physics models (e.g., elastic models).
+  * Improved numerical discretization of the forward model and its adjoint.
+  * Novel algorithmic research, e.g., machine learning.
+* Performance optimization:
+  * Ongoing optimization of software implementation on the current generation of CPUs/GPUs.
+  * Optimization for different runtime environments for on-prem and Cloud environments. 
+  * Porting to new architectures for evaluation and productionization.
+  * Parallel programming models, e.g., MPI, OpenMP, CUDA, HIP.
+
+Wave propogator kernels (for brevity, propogator kernels may refer to forward models or their adjoint) get a lot of attention as they are the numerical core of all seismic imaging methods and account for the bulk of the computational cost (where the remaining cost is dominated by IO).
+
+While the PDEs, numerical discretization methods, and performance optimization techniques are widely considered well known, the community is faced with several challenges:
+* Software is costly to implement as it requires:
+  * specialists in mathematical model development,
+  * specialists in the parallel programming model appropriate to the target architecture, and
+  * extensive code verification for correctness and robustness.
+* Difficult to perform an apples-to-apples comparison when different implementations are done by different developers of varying skills (i.e., does the benchmark reflect differences in architecture or differences in developer skill).
 * Porting key benchmarks to a new architecture, including performance analysis and tuning, typically takes multiple months of an HPC developer - this not only has a high cost but also ties up a scarce resource. 
 * The lack of reference implementations means that it is difficult to meaningfully compare the benchmark results from different groups because they have implemented different discretisation variations.
 * There is a remarkable absence of gradient type benchmarks. This is problematic as backpropagation (i.e. use of the adjoint state method for any gradient calculation) is frequently the most significant bottleneck. This tends to be limited by total memory on the computing device and the I/O bandwidth for streaming snapshots to host and/or storage.
 * In general, the benchmarks themselves are closed source. This not only means significant duplication of effort but frequently leads to a lack of robust and reproducible results. 
-
 
 ## Methodology
 
