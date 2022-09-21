@@ -1,0 +1,30 @@
+name: publish
+
+on:
+   # Trigger the workflow on push or pull request,
+   # but only for the master branch
+   push:
+     branches:
+       - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        npm install -g reveal-md
+    - name: Create static site
+      run: |
+        reveal-md README.md --static /tmp/gh-pages
+
+    - name: Publish
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: /tmp/gh-pages
