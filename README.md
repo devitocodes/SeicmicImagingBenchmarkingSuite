@@ -1,528 +1,233 @@
-# reveal-md
+Title: Open Seismic imaging benchmarking platform for data inversion methods
 
-[reveal.js][1] on steroids! Get beautiful reveal.js presentations from Markdown files.
-
-## Installation
-
-```bash
-npm install -g reveal-md
-```
-
-## Usage
-
-```bash
-reveal-md slides.md
-```
-
-This starts a local server and opens any Markdown file as a reveal.js presentation in the default browser.
-
-## Docker
-
-You can use Docker to run this tool without needing Node.js installed on your machine. Run the public Docker image,
-providing your markdown slides as a volume. A few examples:
-
-```bash
-docker run --rm -p 1948:1948 -v <path-to-your-slides>:/slides webpronl/reveal-md:latest
-docker run --rm -p 1948:1948 -v <path-to-your-slides>:/slides webpronl/reveal-md:latest --help
-```
-
-The service is now running at [http://localhost:1948][2].
-
-To enable live reload in the container, port 35729 should be mapped as well:
-
-```bash
-docker run --rm -p 1948:1948 -p 35729:35729 -v <path-to-your-slides>:/slides webpronl/reveal-md:latest /slides --watch
-```
-
-## Features
-
-- [Installation][3]
-- [Usage][4]
-- [Docker][6]
-- [Features][7]
-  - [Markdown][8]
-    - [Code Section][59]
-  - [Theme][9]
-  - [Highlight Theme][10]
-  - [Custom Slide Separators][11]
-  - [Custom Slide Attributes][12]
-  - [reveal-md Options][13]
-  - [Reveal.js Options][14]
-  - [Speaker Notes][15]
-  - [YAML Front matter][16]
-  - [Live Reload][17]
-  - [Custom Scripts][18]
-  - [Custom CSS][19]
-  - [Custom Favicon][20]
-  - [Pre-process Markdown][21]
-  - [Print to PDF][22]
-    - [1. Using Puppeteer][23]
-    - [2. Using Docker & DeckTape][24]
-  - [Static Website][25]
-  - [Disable Auto-open Browser][26]
-  - [Directory Listing][27]
-  - [Custom Port][28]
-  - [Custom Template][29]
-- [Scripts, Preprocessors and Plugins][30]
-- [Related Projects & Alternatives][31]
-- [Thank You][32]
-- [License][33]
-
-### Markdown
-
-The Markdown feature of reveal.js is awesome, and has an easy (and configurable) syntax to separate slides. Use three
-dashes surrounded by two blank lines (`\n---\n`). Example:
-
-```mkdn
-# Title
-
-- Point 1
-- Point 2
+Speaker: Gerard Gorman, Devito Codes and Imperial College London.
 
 ---
 
-## Second slide
+* Forewarning - imperfections ahead.
+* If you see something broken...please file a PR/issue
 
-> Best quote ever.
-
-Note: speaker notes FTW!
-```
-
-#### Code section
-
-##### Syntax highlighting
-
-~~~mkdn
-```js
-console.log('Hello world!')
-```
-~~~
-
-##### Highlight some lines
-
-You can highlight one line, multiple lines or both.
-
-~~~mkdn
-```python [1|3-6]
-n = 0
-while n < 10:
-  if n % 2 == 0:
-    print(f"{n} is even")
-  else:
-    print(f"{n} is odd")
-  n += 1
-```
-~~~
-
-### Theme
-
-Override theme (default: `black`):
-
-```bash
-reveal-md slides.md --theme solarized
-```
-
-See [available themes][34].
-
-Override reveal theme with a custom one. In this example, the file is at `./theme/my-custom.css`:
-
-```bash
-reveal-md slides.md --theme theme/my-custom.css
-```
-
-Override reveal theme with a remote one (use rawgit.com because the url must allow cross-site access):
-
-```bash
-reveal-md slides.md --theme https://rawgit.com/puzzle/pitc-revealjs-theme/master/theme/puzzle.css
-```
-
-### Highlight Theme
-
-Override highlight theme (default: `zenburn`):
-
-```bash
-reveal-md slides.md --highlight-theme github
-```
-
-See [available themes][35].
-
-### Custom Slide Separators
-
-Override slide separator (default: `\n---\n`):
-
-```bash
-reveal-md slides.md --separator "^\n\n\n"
-```
-
-Override vertical/nested slide separator (default: `\n----\n`):
-
-```bash
-reveal-md slides.md --vertical-separator "^\n\n"
-```
-
-### Custom Slide Attributes
-
-Use the [reveal.js slide attributes][36] functionality to add HTML attributes, e.g. custom backgrounds. Alternatively,
-add an HTML `id` attribute to a specific slide and style it with CSS.
-
-Example: set the second slide to have a PNG image as background:
-
-```mkdn
-# slide1
-
-This slide has no background image.
+> <small>https://github.com/devitocodes/SeismicImagingBenchmarkingSuite</small>
 
 ---
 
-<!-- .slide: data-background="./image1.png" -->
+Co-conspirators: F. Luporini (Devito Codes), A. St-Cyr (Shell), A. Loddoch, J. Washbourne 
+(Chevron), A. Souza (Petrobras), K. Hester (NVidia), P. Witte (Microsoft), F.
+Dupros (ARM), M. Araya (Total), C. Leader (SLB), J. Tilly (BP)
 
-# slide2
-
-This one does!
-```
-
-### reveal-md Options
-
-Define options similar to command-line options in a `reveal-md.json` file that must be located at the root of the
-Markdown files. They'll be picked up automatically. Example:
-
-```json
-{
-  "separator": "^\n\n\n",
-  "verticalSeparator": "^\n\n"
-}
-```
-
-### Reveal.js Options
-
-Define Reveal.js [options][37] in a `reveal.json` file that must be located at the root directory of the Markdown files.
-They'll be picked up automatically. Example:
-
-```json
-{
-  "controls": true,
-  "progress": true
-}
-```
-
-### Speaker Notes
-
-Use the [speaker notes][38] feature by using a line starting with `Note:`.
-
-### YAML Front matter
-
-Set Markdown (and reveal.js) options specific to a presentation with YAML front matter:
-
-```mkdn
----
-title: Foobar
-separator: <!--s-->
-verticalSeparator: <!--v-->
-theme: solarized
-revealOptions:
-  transition: 'fade'
+>  Please let me know if I have missed your name (PRs welcome...)
 ---
 
-Foo
+## Vision
+
+Bring *community* together to:
+* Standardize benchmarking of seismic imaging kernels.
+* Provide open-source reference implementations for a range of architectures.
+* Publish reproducible benchmark experiments.
 
-Note: test note
+---
 
-<!--s-->
+### Community/stakeholders
+* Energy companies.
+* O&G service companies.
+* Processor manufacturers, OEMs, supercomputer/cluster manufacturers.
+* Cloud providers.
+* Independent software vendors.
+* Academic research community.
 
-# Bar
+---
+
+### Business case for **open** domain specific benchmarks
+* Making informed purchasing decisions for on-prem/Cloud.
+  * Market value of HPC market in O&G ~1b USD.
+* Software roadmaps:
+  * Performance-critical software must be written in vendor-native programming model.
+  * Unicorn developers are a scarce and high value.
+  * Extensive code verification and code hardening.
+* Enables collaboration and code/data reuse - stop burning our human capital.
 
-<!--v-->
-```
+---
+
+> Porting key benchmarks to a new architecture, including performance analysis and tuning, typically takes multiple months of *unicorn* developer effort from *user* and vendor.
 
-### Live Reload
+> Cost estimates range from 500k-1m(?) USD per customer-architecture pair. Does not include duplication of work in consortia etc.
 
-Using `-w` option changes to markdown files will trigger the browser to reload and thus display the changed presentation
-without the user having to reload the browser.
+---
 
-```bash
-reveal-md slides.md -w
-```
+###  \<rant\> Apples-to-~apples~mystry-fruit comparisons
+Common issues benchmarking against other codes:
+* Difference in the PDEs (e.g., different BCs, constant vs variable density).
+* Difference in discretisation, e.g.,
+  * Time-order, space-order, boundary conditions, (dx, dy, dz, dt), (nx, ny, nz, nt).
+  * Have encountered ~10 different variations of TTI.
+* ...
 
-### Custom Scripts
+---
+
+* ...
+* Difference in algorithmic optimizations, e.g., expanding box, factorization.
+* Runtime choices, e.g.,
+  * Pure OpenMP vs MPI-x, pinning.
+* Are we even computing the same solution?
+  * Floating point addition is non-associative.
+  * Lossy compression, reduced precision...
+---
 
-Inject custom scripts into the page:
+* Reproducibility:
+  * Lack of access to closed source codes.
+  * Performance data often covered by NDA.
+  * Problematic to get all parties using the same or twin compute environments (*"it works on my laptop"*).
 
-```bash
-reveal-md slides.md --scripts script.js,another-script.js
-```
+> Are we comparing methods, hardware or skill?
 
-- Don't use absolute file paths, files should be in adjacent or descending folders.
-- Absolute URL's are allowed.
+---
 
-### Custom CSS
+> Presenter: By moving to GPU we get a x1000 speedup.</br>
+> Chair: What was your reference?</br>
+> Presenter: An in-house code written in Java.</br>
+> Chair: What did your roofline model look like?</br>
+> Presenter: What's a roofline model?</br>
 
-Inject custom CSS into the page:
+\<\\rant\>
 
-```bash
-reveal-md slides.md --css style.css,another-style.css
-```
+---
 
-- Don't use absolute file paths, files should be in adjacent or descending folders.
-- Absolute URL's are allowed.
+### Objectives of standardisation
+* Standardize problem specification, includes:
+  * Correctness tests.
+  * Performance metrics.
+* Open-source reference implementation:
+  * Design in reproducibility, e.g., containers to set runtime environemnent.
+  * Starting point porting, optimizing in-codes.
+  * Sandbox for vendors, customers and researchers to collaborate.
 
-### Custom Favicon
+  ---
 
-If the directory with the markdown files contains a `favicon.ico` file, it will automatically be used as a favicon
-instead of the [default favicon][39].
+* Increase relevance of benchmarks:
+  * Gradient-type benchmarks are uncommon despite the fact that backpropagation is frequently the main performance bottleneck.
+* In general, the benchmarks themselves are closed-source. This not only means significant duplication of effort but frequently leads to a lack of robust and reproducible results. 
 
-### Pre-process Markdown
+---
 
-`reveal-md` can be given a markdown preprocessor script via the `--preprocessor` (or `-P`) option. This can be useful to
-implement custom tweaks on the document format without having to dive into the guts of the Markdown parser.
+### Challenges: Algorithmic development
+  * Improved physics models (e.g., elastic models).
+  * Improved numerical discretization of the forward model and its adjoint.
+  * Novel algorithmic research, e.g., machine learning.
 
-For example, to have headers automatically create new slides, one could have the script `preproc.js`:
+---
 
-```javascript
-// headings trigger a new slide
-// headings with a caret (e.g., '##^ foo`) trigger a new vertical slide
-module.exports = (markdown, options) => {
-  return new Promise((resolve, reject) => {
-    return resolve(
-      markdown
-        .split('\n')
-        .map((line, index) => {
-          if (!/^#/.test(line) || index === 0) return line;
-          const is_vertical = /#\^/.test(line);
-          return (is_vertical ? '\n----\n\n' : '\n---\n\n') + line.replace('#^', '#');
-        })
-        .join('\n')
-    );
-  });
-};
-```
+### Challenges: Software development and optimization:
+  * Ongoing optimization of software implementation on the current generation of CPUs/GPUs.
+  * Optimization for different runtime environments for on-prem and Cloud environments. 
+  * Porting to new architectures for evaluation and productionization.
+  * Parallel programming models, e.g., MPI, OpenMP, CUDA, HIP.
 
-and use it like this
+---
 
-```bash
-reveal-md --preprocessor preproc.js slides.md
-```
+### Scope of benchmarking
+* Seismic imaging is dominated by the cost of forward modelling and the adjoint-state method.
+  * Many different PDEs and choices of discretization.
+* Variability in OI, memory pressure and register pressure.
+* Important to choose benchmarks that reflect real use case, e.g.:
+  * Gradient benchmarks should be done in addition to forward model benchmarks.
+  * Large offsets or high frequency will necessitate distributed memory parallelization.
 
-### Print to PDF
+---
 
-There are (at least) two options to export a deck to a PDF file.
+### Out of scope
+* Storage IO (with the exception is serialization for gradient computation).
+* Full FWI/RTM - compute cost is too high.
 
-#### 1. Using Puppeteer
+---
 
-Create a (printable) PDF from the provided Markdown file:
+## Roadmap
 
-```bash
-reveal-md slides.md --print slides.pdf
-```
+* Learn from numerous benchmarking suites from other disciplines
+* Bring together expertise from industry and academia to:
+  * Standardize benchmarking of seismic imaging kernels.
+  * Publish reproducible benchmark data.
+  * Provide reference implementations and maximize software reuse.
 
-The PDF is generated using Puppeteer. Alternatively, append `?print-pdf` to the url from the command-line or in the
-browser (make sure to remove the `#/` or `#/1` hash). Then print the slides using the browser's (not the native) print
-dialog. This seems to work in Chrome.
+---
 
-By default, paper size is set to match options in your [`reveal.json`][14] file, falling back to a default value 960x700
-pixels. To override this behaviour, you can pass custom dimensions or format in a command line option `--print-size`:
+### Phase I: Bootstrap the creation of v0.1
+Milestones:
+* Announce call for participation and create initial stakeholder group - this presentation.
+* Create template benchmark specifications - encodes best practices.
+* Create examplar benchmark specifications based on isotropic acoustic and TTI.
 
-```bash
-reveal-md slides.md --print slides.pdf --print-size 1024x768   # in pixels when no unit is given
-reveal-md slides.md --print slides.pdf --print-size 210x297mm  # valid units are: px, in, cm, mm
-reveal-md slides.md --print slides.pdf --print-size A4         # valid formats are: A0-6, Letter, Legal, Tabloid, Ledger
-```
+---
 
-In case of an error, please try the following:
+### Phase I: details
+Considerations when defining a benchmark specification:
+* Unambiguous problem specification:
+  * Enable benchmark problems to be set up using different codes.
+  * Problem dependencies, e.g., datasets will be open access.
 
-- Analyze debug output, e.g. `DEBUG=reveal-md reveal-md slides.md --print`
-- See `reveal-md help` for Puppeteer arguments (`puppeteer-launch-args` and `puppeteer-chromium-executable`)
-- Use Docker & DeckTape:
+---
 
-#### 2. Using Docker & DeckTape
+* Define measures of success:
+  * Correctness test, e.g., error norms.
+  * Measure stencil throughput (grid-points-per-second).
+  * Measure parallel efficiency.
 
-The first method of printing does not currently work when running reveal-md in a Docker container, so it is recommended
-that you print with [DeckTape][40] instead. Using DeckTape may also resolve issues with the built-in printing method’s
-output.
+---
 
-To create a PDF of a presentation using reveal-md running on your localhost using the DeckTape Docker image, use the
-following command:
+* Problem size:
+  * Problem sizes should be representative of production workloads.
+  * Reduced problem sizes or space-order may also be necessary:
+    * Training, aid in code porting, evaluation on new architectures with low memory.
 
-```bash
-docker run --rm -t --net=host -v $OUTPUT_DIR:/slides astefanutti/decktape $URL $OUTPUT_FILENAME
-```
+---
 
-Replace these variables:
+### Submission process
+* Benchmark specifications are submitted as PRs to the [GitHub repo]( 
+https://github.com/devitocodes/SeicmicImagingBenchmarkingSuite).
+* The file CONTRIBUTIONS.mb Developer's Certificate of Origin 1.1.
+* PRs will be peer-reviewed and published on main after revisions have been completed.
 
-- `$OUTPUT_DIR` is the folder you want the PDF to be saved to.
-- `$OUTPUT_FILENAME` is the name of the PDF.
-- `$URL` is where the presentation can be accessed in your browser (without the `?print-pdf` suffix). If you are not
-  running reveal-md in Docker, you will need to replace `localhost` with the IP address of your computer.
+---
 
-For a full list of export options, please see the the [DeckTape github][40], or run the Docker container with the `-h`
-flag.
+### Phase II
+Milestones:
+* Develop reference implementations of examplar benchmarks.
+* Establish and demonstrate reproducibility standards.
+* Initialize benchmark league table.
 
-### Static Website
+---
 
-This will export the provided Markdown file into a stand-alone HTML website including scripts and stylesheets. The files
-are saved to the directory passed to the `--static` parameter (default: `./_static`):
+* Provide reference implementations of benchmark problems using the open-source platform, [Devito](https://www.devitoproject.org/). 
+* Devito is a Python package to implement optimized stencil computation (e.g., finite differences, image processing, machine learning) from high-level symbolic problem definitions.
+* Supports *MPI, OpenMP, OpenACC, CUDA (HIP upcoming)* and *Intel and AMD x86, NVidia and AMD GPUs, ARM*.
+* Open source: devitoproject.org
+* Commercial: devitocodes.com
 
-```bash
-reveal-md slides.md --static _site
-```
+---
 
-This should copy images along with the slides. Use `--static-dirs` to copy directories with other static assets to the
-target directory. Use a comma-separated list to copy multiple directories.
+### Submission process
+* New submissions built on examplar templates.
+* Submissions via as PRs to the GitHub repo.
+* IP covered CONTRIBUTIONS.mb Developer's Certificate of Origin 1.1.
+* GitHub actions used to automate testing/correctness and automate benchmarking on self-hosted runners (requires some gate keeping).
+* All PRs will be peer-reviewed after GitHub Actions checks have been completed.
+* Published on main after revisions have been completed.
 
-```bash
-reveal-md slides.md --static --static-dirs=assets
-```
+---
 
-Providing a directory will result in a stand-alone overview page with links to the presentations (similar to a
-[directory listing][27]):
+### Phase III
+Milestones:
+* Governance structure.
+* Define code and sustainability model.
+* Open call for submissions.
 
-```bash
-reveal-md dir/ --static
-```
+---
 
-By default, all `*.md` files in all subdirectories are included in the generated website. Provide a custom [glob
-pattern][41] using `--glob` to generate slides only from matching files:
+### Phase IV
+Milestones:
+* Bounties on improvements to existing benchmarks.
+* Kaggle-inspired competitions to guide activity.
+* Partner with publisher to create incentives for students and academics.
 
-```bash
-reveal-md dir/ --static --glob '**/slides.md'
-```
+---
 
-Additional `--absolute-url` and `--featured-slide` parameters could be used to generate [OpenGraph][42] metadata
-enabling more attractive rendering for slide deck links when shared in some social sites.
-
-```bash
-reveal-md slides.md --static _site --absolute-url https://example.com --featured-slide 5
-```
-
-### Disable Auto-open Browser
-
-To disable auto-opening the browser:
-
-```bash
-reveal-md slides.md --disable-auto-open
-```
-
-### Directory Listing
-
-Show (recursive) directory listing of Markdown files:
-
-```bash
-reveal-md dir/
-```
-
-Show directory listing of Markdown files in current directory:
-
-```bash
-reveal-md
-```
-
-### Custom Port
-
-Override port (default: `1948`):
-
-```bash
-reveal-md slides.md --port 8888
-```
-
-### Custom Template
-
-Override reveal.js HTML template ([default template][43]):
-
-```bash
-reveal-md slides.md --template my-reveal-template.html
-```
-
-Override listing HTML template ([default template][44]):
-
-```bash
-reveal-md slides.md --listing-template my-listing-template.html
-```
-
-## Scripts, Preprocessors and Plugins
-
-- [reveal-md-scripts][45]
-- [How to add reveal.js plugins][58]
-
-## Related Projects & Alternatives
-
-- [Slides][46] is a place for creating, presenting and sharing slide decks.
-- [Sandstorm Hacker Slides][47] is a simple app that combines Ace Editor and RevealJS.
-- [Tools][48] in the Plugins, Tools and Hardware section of Reveal.js.
-- [Org-Reveal][49] exports Org-mode contents to Reveal.js HTML presentation.
-- [DeckTape][40] is a high-quality PDF exporter for HTML5 presentation frameworks.
-- [GitPitch][50] generates slideshows from PITCHME.md found in hosted Git repos.
-
-## Articles About reveal-md
-
-- [great slides with reveal markdown][51]
-- [Create your own auto-publishing slides with reveal-md and Travis CI][52]
-- [Beautiful presentations from markdown — who knew it could be so easy?][53]
-- [Using reveal-md to create technical presentations][54]
-- [Use reveal-md to generate multiple slides and host them on GitHub Page][55]
-
-## Thank You
-
-Many thanks to all [contributors][56]!
-
-## License
-
-[MIT][57]
-
-[1]: https://revealjs.com
-[2]: http://localhost:1948
-[3]: #installation
-[4]: #usage
-[5]: #revealjs-v4
-[6]: #docker
-[7]: #features
-[8]: #markdown
-[9]: #theme
-[10]: #highlight-theme
-[11]: #custom-slide-separators
-[12]: #custom-slide-attributes
-[13]: #reveal-md-options
-[14]: #revealjs-options
-[15]: #speaker-notes
-[16]: #yaml-front-matter
-[17]: #live-reload
-[18]: #custom-scripts
-[19]: #custom-css
-[20]: #custom-favicon
-[21]: #pre-process-markdown
-[22]: #print-to-pdf
-[23]: #1-using-puppeteer
-[24]: #2-using-docker--decktape
-[25]: #static-website
-[26]: #disable-auto-open-browser
-[27]: #directory-listing
-[28]: #custom-port
-[29]: #custom-template
-[30]: #scripts-preprocessors-and-plugins
-[31]: #related-projects--alternatives
-[32]: #thank-you
-[33]: #license
-[34]: https://github.com/hakimel/reveal.js/tree/master/css/theme/source
-[35]: https://github.com/isagalaev/highlight.js/tree/master/src/styles
-[36]: https://revealjs.com/markdown/#slide-attributes
-[37]: https://revealjs.com/config/
-[38]: https://revealjs.com/speaker-view/
-[39]: lib/favicon.ico
-[40]: https://github.com/astefanutti/decktape
-[41]: https://github.com/isaacs/node-glob
-[42]: http://ogp.me
-[43]: https://github.com/webpro/reveal-md/blob/master/lib/template/reveal.html
-[44]: https://github.com/webpro/reveal-md/blob/master/lib/template/listing.html
-[45]: https://github.com/amra/reveal-md-scripts
-[46]: https://slides.com/
-[47]: https://github.com/jacksingleton/hacker-slides
-[48]: https://github.com/hakimel/reveal.js/wiki/Plugins,-Tools-and-Hardware#tools
-[49]: https://github.com/yjwen/org-reveal
-[50]: https://github.com/gitpitch/gitpitch
-[51]: https://csinva.io/blog/misc/reveal_md_enhanced/readme.html
-[52]: https://ericmjl.github.io/blog/2020/1/18/create-your-own-auto-publishing-slides-with-reveal-md-and-travis-ci/
-[53]: https://mandieq.medium.com/beautiful-presentations-from-markdown-who-knew-it-could-be-so-easy-d279aa7f787a
-[54]: https://lacourt.dev/2019/03/12
-[55]: https://blog.hanklu.tw/post/2021/use-reveal-md-to-generate-multiple-slides-and-host-them-on-github-page/
-[56]: https://github.com/webpro/reveal-md/graphs/contributors
-[57]: http://webpro.mit-license.org
-[58]: https://github.com/webpro/reveal-md/issues/102#issuecomment-692494366
-[59]: #code-section
+# Discussion
