@@ -31,12 +31,12 @@ Dupros (ARM), M. Araya (Total), C. Leader (SLB), J. Tilly (BP)
 >  Please let me know if I have missed your name (PRs welcome...)</script></section><section  data-markdown><script type="text/template">
 ## Vision
 
-Bring *the community* together to:
+Bring *community* together to:
 * Standardize benchmarking of seismic imaging kernels.
 * Provide open-source reference implementations for a range of architectures.
 * Publish reproducible benchmark experiments.
 </script></section><section  data-markdown><script type="text/template">
-### Who is the community?
+### Community/stakeholders
 * Energy companies.
 * O&G service companies.
 * Processor manufacturers, OEMs, supercomputer/cluster manufacturers.
@@ -44,16 +44,18 @@ Bring *the community* together to:
 * Independent software vendors.
 * Academic research community.
 </script></section><section  data-markdown><script type="text/template">
-### Business case for domain specific benchmarks
-* Basis of purchasing decisions for on-prem and Cloud.
+### Business case for **open** domain specific benchmarks
+* Benchmarking informs purchasing decisions for on-prem/Cloud.
   * Market value of HPC market in O&G ~1b USD.
 * Software roadmaps:
   * Performance-critical software must be written in vendor-native programming model.
-  * Unicorn developers are a scarce, expensive (and leaving industry).
+  * Unicorn developers are a scarce, expensive (and leaving industry?)
   * Extensive code verification and code hardening.
-* Enables collaboration with hardware and Cloud vendors.
+* Enables collaboration and code/data reuse - stop burning our human capital.
 </script></section><section  data-markdown><script type="text/template">
-> Porting key benchmarks to a new architecture, including performance analysis and tuning, typically takes multiple months of *unicorn* developer effort. Cost estimates range from 500k-1m USD per customer-architecture pair. 
+> Porting key benchmarks to a new architecture, including performance analysis and tuning, typically takes multiple months of *unicorn* developer effort from *user* and vendor.
+
+> Cost estimates range from 500k-1m(?) USD per customer-architecture pair. Does not include duplication of work in consortia etc.
 </script></section><section  data-markdown><script type="text/template">
 ###  \<rant\> Apples-to-~apples~mystry-fruit comparisons
 Common issues benchmarking against other codes:
@@ -64,11 +66,16 @@ Common issues benchmarking against other codes:
 * ...
 </script></section><section  data-markdown><script type="text/template">
 * ...
-* Difference in algorithimic optimizations, e.g., expanding box, factorization.
+* Difference in algorithmic optimizations, e.g., expanding box, factorization.
 * Runtime choices, e.g.,
   * Pure OpenMP vs MPI-x, pinning.
 * Are we even computing the same solution?
   * Floating point addition is non-associative.
+  * Lossy compression, reduced precision...</script></section><section  data-markdown><script type="text/template">
+* Reproducibility:
+  * Lack of access to closed source codes.
+  * Performance data often covered by NDA.
+  * Problematic to get all parties using the same or twin compute environments (*"it works on my laptop"*).
 
 > Are we comparing methods, hardware or skill?
 </script></section><section  data-markdown><script type="text/template">
@@ -85,13 +92,14 @@ Common issues benchmarking against other codes:
   * Correctness tests.
   * Performance metrics.
 * Open-source reference implementation:
-  * Design in reproducibility, e.g., containers to set runtime environemnet.
+  * Design in reproducibility, e.g., containers to set runtime environemnent.
   * Starting point porting, optimizing in-codes.
   * Sandbox for vendors, customers and researchers to collaborate.
 
   ---
 
-* Increase quality of benchmarks: Gradient-type benchmarks are uncommon dispite the fact that backpropagation is frequently the main performance bottleneck.
+* Increase relevance of benchmarks:
+  * Gradient-type benchmarks are uncommon despite the fact that backpropagation is frequently the main performance bottleneck.
 * In general, the benchmarks themselves are closed-source. This not only means significant duplication of effort but frequently leads to a lack of robust and reproducible results. 
 </script></section><section  data-markdown><script type="text/template">
 ### Challenges: Algorithmic development
